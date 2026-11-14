@@ -1,0 +1,10 @@
+{
+  "network": "testnet",
+  "board": "board.rungs-ops-5860.testnet",
+  "dao": "rungs5860.sputnikv2.testnet",
+  "lead": "rungs-lead-5860.testnet",
+  "rev": "rungs-rev-5860.testnet",
+  "ops": "rungs-ops-5860.testnet",
+  "alice": "rungs-alice-5860.testnet",
+  "sock": "rungs-sock-5860.testnet"
+}

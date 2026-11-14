@@ -1,0 +1,13 @@
+{
+  "name": "rungs-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node setup.mjs",
+    "demo": "node demo.mjs",
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "near-api-js": "^7.5.3"
+  }
+}

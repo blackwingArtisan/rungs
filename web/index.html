@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rungs · earned-trust bounties on NEAR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0b10; --panel: #15141b; --line: #26242f; --ink: #ecebf2; --dim: #8f8ca3;
+    --auto: #3ddc97; --council: #f5b942; --dao: #a78bfa; --red: #ff5c6c;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 Inter, system-ui, sans-serif; }
+  header { display: flex; align-items: center; gap: 14px; padding: 16px 28px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .logo { font-weight: 800; font-size: 21px; letter-spacing: -.02em; }
+  .logo span { color: var(--dao); }
+  .tag { color: var(--dim); font-size: 14px; }
+  .net { margin-left: auto; font: 12px 'JetBrains Mono', monospace; color: var(--dim); border: 1px solid var(--line); padding: 4px 10px; border-radius: 99px; overflow-wrap: anywhere; }
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 18px 28px 32px; }
+  .ladder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+  .rung { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; border-top: 3px solid var(--c); position: relative; }
+  .rung h3 { margin: 0; font-size: 16px; display: flex; align-items: baseline; gap: 8px; }
+  .rung h3 em { font-style: normal; color: var(--c); font: 700 12px 'JetBrains Mono', monospace; }
+  .rung p { margin: 6px 0 0; color: var(--dim); font-size: 13.5px; }
+  .rung b.n { position: absolute; right: 16px; top: 12px; font-size: 26px; color: var(--c); }
+  .rung.flash { animation: flash 1.2s; }
+  @keyframes flash { 0% { background: color-mix(in srgb, var(--c) 30%, var(--panel)); } }
+  main { display: grid; grid-template-columns: 1.25fr 1fr; gap: 18px; }
+  @media (max-width: 960px) { main, .ladder { grid-template-columns: 1fr; } .wrap { padding: 16px; } header { padding: 14px 16px; } }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; min-width: 0; }
+  h2 { margin: 0 0 10px; font-size: 12.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--dim); font-weight: 600; }
+  .stack { display: grid; gap: 18px; align-content: start; min-width: 0; }
+  .feed { list-style: none; margin: 0; padding: 0; max-height: 470px; overflow: auto; }
+  .feed li { display: grid; grid-template-columns: 74px 1fr auto; gap: 10px; align-items: start; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; }
+  .feed li:first-child { border-top: 0; }
+  .feed .note { color: var(--dim); font-size: 12.5px; }
+  .amt { font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+  .t { font: 700 11px Inter; letter-spacing: .05em; padding: 3px 0; text-align: center; border-radius: 6px; }
+  .t.Auto { background: #3ddc9722; color: var(--auto); }
+  .t.Council { background: #f5b94222; color: var(--council); }
+  .t.Dao { background: #a78bfa22; color: var(--dao); }
+  .t.none { background: #ffffff10; color: var(--dim); }
+  .s { font: 600 11px 'JetBrains Mono', monospace; color: var(--dim); }
+  .s.Paid { color: var(--auto); } .s.Rejected { color: var(--red); } .s.AwaitingCouncil { color: var(--council); } .s.AwaitingDao { color: var(--dao); }
+  .person { padding: 10px 0; border-top: 1px solid var(--line); }
+  .person:first-of-type { border-top: 0; }
+  .person .top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .person .who { font-family: 'JetBrains Mono', monospace; font-size: 14px; overflow-wrap: anywhere; }
+  .bar { position: relative; height: 12px; background: #201e29; border-radius: 99px; margin: 8px 0 6px; }
+  .bar i { display: block; height: 100%; border-radius: 99px; background: var(--council); transition: width .6s; }
+  .bar.ok i { background: var(--auto); }
+  .bar .th { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); opacity: .6; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip { font: 12px 'JetBrains Mono', monospace; border: 1px solid var(--line); border-radius: 99px; padding: 1px 8px; color: var(--dim); }
+  .chip.capped { border-color: #ff5c6c66; color: var(--red); }
+  .pill { font: 700 11px Inter; letter-spacing: .04em; padding: 2px 8px; border-radius: 99px; }
+  .pill.ok { background: #3ddc9722; color: var(--auto); } .pill.no { background: #f5b94222; color: var(--council); }
+  .dao { font-size: 14px; }
+  .dao .votes { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .vote { font: 12px 'JetBrains Mono', monospace; padding: 3px 9px; border-radius: 8px; background: #ffffff0d; color: var(--dim); }
+  .vote.yes { background: #a78bfa26; color: var(--dao); }
+  .console { background: #07070a; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; height: 210px; overflow: auto; font: 12.5px/1.55 'JetBrains Mono', monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .console .act { color: var(--ink); font-weight: 600; margin-top: 6px; }
+  .console .auto { color: var(--auto); } .console .council { color: var(--council); } .console .dao { color: var(--dao); }
+  button { font: 600 14px Inter; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; background: var(--dao); color: #120a26; }
+  button:disabled { opacity: .4; cursor: default; }
+  .muted { color: var(--dim); font-size: 13px; }
+  a { color: var(--dao); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Rungs<span>.</span></div>
+  <div class="tag">Team bounties where the approval a payout needs depends on its size and on trust the contributor has earned.</div>
+  <div class="net" id="net">testnet</div>
+</header>
+<div class="wrap">
+  <section class="ladder">
+    <div class="rung" id="r-Auto" style="--c:var(--auto)"><b class="n" id="n-Auto">0</b><h3>Instant <em>RUNG 1</em></h3><p id="p-Auto">…</p></div>
+    <div class="rung" id="r-Council" style="--c:var(--council)"><b class="n" id="n-Council">0</b><h3>One council approval <em>RUNG 2</em></h3><p id="p-Council">…</p></div>
+    <div class="rung" id="r-Dao" style="--c:var(--dao)"><b class="n" id="n-Dao">0</b><h3>DAO vote <em>RUNG 3</em></h3><p id="p-Dao">…</p></div>
+  </section>
+  <main>
+    <section class="panel">
+      <h2>Bounty board</h2>
+      <ul class="feed" id="feed"></ul>
+      <p class="muted" id="foot"></p>
+    </section>
+    <div class="stack">
+      <section class="panel">
+        <h2>Contributors · reputation</h2>
+        <div id="people"><p class="muted">No contributors yet.</p></div>
+      </section>
+      <section class="panel">
+        <h2>Latest DAO proposal</h2>
+        <div id="dao" class="dao"><p class="muted">Nothing escalated yet.</p></div>
+      </section>
+      <section class="panel" id="consolePanel" style="display:none">
+        <h2>Demo run</h2>
+        <div style="margin-bottom:10px"><button id="runBtn">Run the 3-act demo</button></div>
+        <div class="console" id="console"><span class="muted">Act 1: a newcomer earns the instant tier. Act 2: a rogue poster farms a sock account. Act 3: a big bounty goes to the Sputnik DAO.</span></div>
+      </section>
+      <section class="panel" id="selfRun">
+        <h2>Run it yourself</h2>
+        <p class="muted" style="margin:0">Clone <a href="https://github.com/blackwingArtisan/rungs">the repo</a>, then <code>cd app && npm i && npm start</code> and open <code>localhost:8788</code>. The README has every step.</p>
+      </section>
+    </div>
+  </main>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+let D, RPCS, rpcIx = 0, CFG, COUNCIL, lastCounts = {};
+const yocto = 10n ** 24n;
+const near = (y) => (Number(BigInt(y) * 1000n / yocto) / 1000).toLocaleString(undefined, { maximumFractionDigits: 3 });
+const short = (a) => { const first = String(a).split('.')[0]; return first.replace(/^rungs-([a-z]+)-\d+$/, '$1'); };
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const STATUS = { Open: 'open', Claimed: 'claimed', AwaitingCouncil: 'needs council', AwaitingDao: 'DAO voting', Paying: 'paying', Paid: 'paid', Rejected: 'rejected' };
+
+async function viewFn(contract, method, args = {}, tries = 0) {
+  const RPC = RPCS[rpcIx % RPCS.length];
+  const r = await fetch(RPC, {
+    method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'query', params: {
+      request_type: 'call_function', finality: 'optimistic', account_id: contract, method_name: method,
+      args_base64: btoa(JSON.stringify(args)) } }),
+  }).then((r) => (r.ok ? r.json() : { error: r.status })).catch((e) => ({ error: String(e) }));
+  if (r.error && tries < RPCS.length) { rpcIx++; return viewFn(contract, method, args, tries + 1); }
+  if (r.error || r.result.error) throw new Error(JSON.stringify(r.error || r.result.error));
+  return JSON.parse(new TextDecoder().decode(new Uint8Array(r.result.result)));
+}
+const board = (m, a) => viewFn(D.board, m, a);
+
+async function refresh() {
+  const [bounties, left, budget] = await Promise.all([board('list_bounties', { limit: 200 }), board('auto_left_today'), board('budget')]);
+  const c = CFG;
+  $('p-Auto').innerHTML = `Up to ${near(c.auto_max)} Ⓝ, and the contributor has ${c.auto_rep}+ reputation. Paid the moment work is submitted. ${near(left)} of ${near(c.daily_auto_cap)} Ⓝ team-wide cap left today.`;
+  $('p-Council').innerHTML = `Up to ${near(c.council_max)} Ⓝ. One council member signs, never the poster or the claimant.`;
+  $('p-Dao').innerHTML = `Above ${near(c.council_max)} Ⓝ. The board files a Transfer proposal on <a href="https://testnet.nearblocks.io/address/${D.dao}" target="_blank" rel="noopener">${esc(short(D.dao))}</a>; the DAO's vote pays.`;
+  for (const tier of ['Auto', 'Council', 'Dao']) {
+    const n = bounties.filter((b) => b.tier === tier && b.status === 'Paid').length;
+    $('n-' + tier).textContent = n;
+    if (lastCounts[tier] !== undefined && n > lastCounts[tier]) { const el = $('r-' + tier); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+    lastCounts[tier] = n;
+  }
+  $('feed').innerHTML = bounties.slice(0, 40).map((b) => `<li><span class="t ${b.tier || 'none'}">${b.tier ? (b.tier === 'Dao' ? 'DAO' : b.tier.toUpperCase()) : 'OPEN'}</span>
+    <div>#${b.id} ${esc(b.title)} <span class="s ${b.status}">${STATUS[b.status]}</span>
+    <div class="note">${b.claimant ? esc(short(b.claimant)) + ' · ' : ''}posted by ${esc(short(b.poster))}${b.note ? ' · ' + esc(b.note.replace(/rungs-([a-z]+)-\d+\.testnet/g, '$1')) : ''}</div></div>
+    <span class="amt">${near(b.amount)} Ⓝ</span></li>`).join('') || '<li><span></span><span class="muted">No bounties yet.</span><span></span></li>';
+  $('foot').innerHTML = `Budget ${near(budget)} Ⓝ · read live from <a href="https://testnet.nearblocks.io/address/${D.board}" target="_blank" rel="noopener">${esc(D.board)}</a>`;
+
+  // the latest contributors, newest first
+  const seen = [];
+  for (const b of bounties) if (b.claimant && !seen.includes(b.claimant)) seen.push(b.claimant);
+  const reps = await Promise.all(seen.slice(0, 3).map((a) => board('reputation', { account: a })));
+  const max = Math.max(5, ...reps.map((r) => r.points));
+  $('people').innerHTML = reps.map((r) => `<div class="person"><div class="top"><span class="who">${esc(short(r.account))}</span>
+    <span class="pill ${r.auto_eligible ? 'ok' : 'no'}">${r.points} pts · ${r.auto_eligible ? 'INSTANT UNLOCKED' : 'NEEDS REVIEW'}</span></div>
+    <div class="bar ${r.auto_eligible ? 'ok' : ''}"><i style="width:${(r.points / max) * 100}%"></i><span class="th" style="left:${(c.auto_rep / max) * 100}%"></span></div>
+    <div class="chips">${r.from_poster.map(([p, n]) => `<span class="chip ${n >= c.per_poster_cap ? 'capped' : ''}">${esc(short(p))} ${n}/${c.per_poster_cap}</span>`).join('') || '<span class="muted">no points yet</span>'}</div></div>`).join('')
+    || '<p class="muted">No contributors yet.</p>';
+
+  const esc8 = bounties.find((b) => b.dao_proposal != null);
+  if (esc8) {
+    const p = await viewFn(D.dao, 'get_proposal', { id: esc8.dao_proposal });
+    COUNCIL ||= (await viewFn(D.dao, 'get_policy')).roles.find((r) => r.name === 'council').kind.Group;
+    const council = COUNCIL;
+    $('dao').innerHTML = `<div><b>Proposal ${p.id}</b> · <span class="s ${p.status === 'Approved' ? 'Paid' : p.status === 'InProgress' ? 'AwaitingDao' : 'Rejected'}">${esc(p.status)}</span></div>
+      <div class="muted">${esc(p.description)} · ${near(p.kind.Transfer.amount)} Ⓝ to ${esc(short(p.kind.Transfer.receiver_id))}</div>
+      <div class="votes">${council.map((m) => `<span class="vote ${p.votes[m] === 'Approve' ? 'yes' : ''}">${esc(short(m))}: ${p.votes[m] ? esc(p.votes[m]) : '…'}</span>`).join('')}</div>`;
+  }
+}
+
+let soonTimer;
+function soon() { clearTimeout(soonTimer); soonTimer = setTimeout(() => refresh().catch(() => {}), 700); }
+
+function log(line) {
+  const c = $('console');
+  const el = document.createElement('div');
+  el.className = line.startsWith('==') ? 'act' : /-> Auto|paid instantly/.test(line) ? 'auto' : /-> Council|approves|rejects/.test(line) ? 'council' : /DAO|votes|sync_dao/.test(line) ? 'dao' : '';
+  el.textContent = line.replace(/rungs-([a-z]+)-\d+\.testnet/g, '$1').replace(/\b(alice|sock)-[a-z0-9]+\.\1\b/g, '$1');
+  c.appendChild(el);
+  c.scrollTop = c.scrollHeight;
+}
+
+$('runBtn').onclick = () => {
+  $('console').innerHTML = '';
+  $('runBtn').disabled = true;
+  const es = new EventSource('api/run' + location.search);
+  es.onmessage = (e) => {
+    const l = JSON.parse(e.data);
+    if (l === '__done__') { es.close(); $('runBtn').disabled = false; return refresh(); }
+    log(l); soon();
+  };
+  es.onerror = () => { es.close(); $('runBtn').disabled = false; };
+};
+
+(async () => {
+  D = await fetch('deployment.json').then((r) => r.json());
+  RPCS = D.rpcs || ['https://rpc.testnet.fastnear.com', 'https://test.rpc.fastnear.com', 'https://near-testnet.drpc.org'];
+  const local = ['localhost', '127.0.0.1'].includes(location.hostname);
+  $('consolePanel').style.display = local ? '' : 'none';
+  $('selfRun').style.display = local ? 'none' : '';
+  $('net').textContent = 'testnet · ' + D.board;
+  CFG = await board('get_config');
+  await refresh();
+  setInterval(() => refresh().catch(() => {}), 5000);
+})();
+</script>
+</body>
+</html>
