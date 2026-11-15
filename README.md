@@ -4,7 +4,7 @@ Rungs is a team bounty board on NEAR. How much approval a payout needs depends o
 
 **Track:** Social Money
 
-- Demo video: see the X post linked in the submission (also `video/rungs-demo.mp4` in the submission)
+- Demo video: [on X](https://x.com/stubbornotterhq/status/2121694438951158089)
 - Live board (testnet): [`board.rungs-ops-5860.testnet`](https://testnet.nearblocks.io/address/board.rungs-ops-5860.testnet)
 - Team DAO (testnet): [`rungs5860.sputnikv2.testnet`](https://testnet.nearblocks.io/address/rungs5860.sputnikv2.testnet)
 - Read-only dashboard: https://blackwingartisan.github.io/rungs/
